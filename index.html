@@ -7,16 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Montserrat', sans-serif;
       background: #003A7E;
       color: #ffffff;
       min-height: 100vh;
     }
-
-    /* ── HEADER ── */
     header {
       background: #002860;
       display: flex;
@@ -25,12 +21,10 @@
       padding: 1rem 3rem;
       border-bottom: 3px solid #3D93F7;
     }
-
     .logo img {
       height: 40px;
       filter: brightness(0) invert(1);
     }
-
     .live-badge {
       display: flex;
       align-items: center;
@@ -45,27 +39,20 @@
       text-transform: uppercase;
       color: #ffffff;
     }
-
     .dot {
       width: 7px; height: 7px;
       border-radius: 50%;
       background: #4ade80;
       animation: blink 2s ease-in-out infinite;
     }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.2; }
-    }
-
-    /* ── HERO BANNER ── */
     .hero {
       background: #002860;
       padding: 4rem 3rem 3.5rem;
       text-align: center;
       border-bottom: 1px solid rgba(61,147,247,0.25);
     }
-
     .hero-eyebrow {
       font-size: 0.7rem;
       font-weight: 700;
@@ -74,7 +61,6 @@
       color: #3D93F7;
       margin-bottom: 1rem;
     }
-
     .hero h1 {
       font-size: clamp(3rem, 6vw, 5.5rem);
       font-weight: 900;
@@ -84,11 +70,7 @@
       line-height: 1;
       margin-bottom: 1rem;
     }
-
-    .hero h1 span {
-      color: #3D93F7;
-    }
-
+    .hero h1 span { color: #3D93F7; }
     .hero p {
       font-size: 0.82rem;
       font-weight: 400;
@@ -99,13 +81,10 @@
       line-height: 1.8;
     }
 
-    /* ── STATS ── */
     .stats {
       display: flex;
-      gap: 0;
       border-bottom: 1px solid rgba(61,147,247,0.2);
     }
-
     .stat {
       flex: 1;
       padding: 1.8rem 2rem;
@@ -113,10 +92,8 @@
       text-align: center;
       transition: background 0.2s;
     }
-
     .stat:last-child { border-right: none; }
     .stat:hover { background: rgba(61,147,247,0.07); }
-
     .stat-label {
       font-size: 0.6rem;
       font-weight: 700;
@@ -125,7 +102,6 @@
       color: rgba(255,255,255,0.45);
       margin-bottom: 0.5rem;
     }
-
     .stat-value {
       font-size: 1.4rem;
       font-weight: 800;
@@ -133,21 +109,18 @@
       text-transform: uppercase;
       color: #ffffff;
     }
-
     .stat-value.blue { color: #3D93F7; }
 
-    /* ── DASHBOARD SECTION ── */
-    .dashboard {
-      padding: 2.5rem 3rem 3.5rem;
+    /* ── LOCATIONS ── */
+    .locations-section {
+      padding: 3rem 3rem 4rem;
     }
-
     .section-header {
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 2rem;
     }
-
     .section-title {
       font-size: 0.65rem;
       font-weight: 700;
@@ -156,20 +129,85 @@
       color: rgba(255,255,255,0.5);
       white-space: nowrap;
     }
-
     .section-line {
       flex: 1;
       height: 1px;
       background: rgba(61,147,247,0.25);
     }
 
+    .locations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .location-card {
+      display: block;
+      text-decoration: none;
+      background: #002860;
+      border: 2px solid rgba(61,147,247,0.3);
+      border-radius: 10px;
+      padding: 2rem 1.8rem;
+      text-align: center;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+      cursor: pointer;
+    }
+    .location-card:hover {
+      border-color: #3D93F7;
+      background: rgba(61,147,247,0.1);
+      transform: translateY(-3px);
+    }
+    .location-card:active { transform: translateY(0); }
+
+    .card-tag {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #3D93F7;
+      margin-bottom: 0.8rem;
+    }
+    .card-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 0.6rem;
+    }
+    .card-address {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.05em;
+    }
+    .card-arrow {
+      margin-top: 1.4rem;
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #3D93F7;
+      border: 1px solid rgba(61,147,247,0.4);
+      border-radius: 999px;
+      padding: 0.4rem 1.1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .location-card:hover .card-arrow {
+      background: #3D93F7;
+      color: #ffffff;
+    }
+
+    /* ── DASHBOARD ── */
+    .dashboard { padding: 0 3rem 3.5rem; }
     .iframe-wrap {
       border-radius: 8px;
       overflow: hidden;
       border: 2px solid rgba(61,147,247,0.3);
       background: #001f4d;
     }
-
     .iframe-wrap iframe {
       display: block;
       width: 100%;
@@ -177,7 +215,6 @@
       border: none;
     }
 
-    /* ── FOOTER ── */
     footer {
       background: #002860;
       border-top: 3px solid #3D93F7;
@@ -191,12 +228,10 @@
       text-transform: uppercase;
       color: rgba(255,255,255,0.45);
     }
+    footer .highlight { color: #3D93F7; }
 
-    footer span.highlight { color: #3D93F7; }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      header, .hero, .dashboard, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      header, .hero, .locations-section, .dashboard, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
       .stats { flex-direction: column; }
       .stat { border-right: none; border-bottom: 1px solid rgba(61,147,247,0.2); }
       .stat:last-child { border-bottom: none; }
@@ -207,10 +242,9 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="logo">
-      <img src="https://cdn.theatertoolkit.com/cdn/wwwroot/themes/custom/thelotent/images/logo-light.svg?v=20260511.1" alt="The Lot">
+      <img src="https://cdn.theatertoolkit.com/cdn/wwwroot/themes/custom/thelotent/images/logo.png?v=20250408.2" alt="The Lot">
     </div>
     <div class="live-badge">
       <span class="dot"></span>
@@ -218,14 +252,12 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <div class="hero">
     <p class="hero-eyebrow">Operations Center</p>
     <h1>The Lot<br><span>Monitoring</span></h1>
     <p>Real-time visibility into system performance, network status, and operational metrics across all locations.</p>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat">
       <div class="stat-label">Platform</div>
@@ -245,10 +277,30 @@
     </div>
   </div>
 
-  <!-- DASHBOARD -->
+  <div class="locations-section">
+    <div class="section-header">
+      <span class="section-title">Select Location</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="locations-grid">
+      <a class="location-card" href="https://dandradethelot.github.io/DASHBOARDLJ/">
+        <div class="card-tag">Dashboard</div>
+        <div class="card-name">La<br>Jolla</div>
+        <div class="card-address">7611 Fay Ave, La Jolla CA 92037</div>
+        <span class="card-arrow">View Dashboard &rarr;</span>
+      </a>
+      <a class="location-card" href="https://dandradethelot.github.io/DASHBOARDLS/">
+        <div class="card-tag">Dashboard</div>
+        <div class="card-name">Liberty<br>Station</div>
+        <div class="card-address">2620 Truxtun Rd, San Diego CA 92106</div>
+        <span class="card-arrow">View Dashboard &rarr;</span>
+      </a>
+    </div>
+  </div>
+
   <div class="dashboard">
     <div class="section-header">
-      <span class="section-title">Power BI Dashboard</span>
+      <span class="section-title">Power BI Dashboard — Overview</span>
       <div class="section-line"></div>
     </div>
     <div class="iframe-wrap">
@@ -261,7 +313,6 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <span>&copy; 2025 The Lot Entertainment</span>
     <span>The Lot Monitoring &middot; <span class="highlight">Powered by Power BI</span></span>
