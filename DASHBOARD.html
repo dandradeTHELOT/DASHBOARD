@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Jolla — System Monitor | The Lot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:      #003A7E;
+      --blue:      #3D93F7;
+      --navy-deep: #001f4d;
+      --white:     #ffffff;
+      --off:       #f0f4fa;
+      --muted:     #8099bb;
+      --line:      rgba(61,147,247,0.18);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--navy-deep);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── BACKGROUND GRID ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── GLOW ORBS ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.25;
+    }
+    .orb-1 { width: 600px; height: 600px; background: var(--blue);  top: -200px; left: -150px; }
+    .orb-2 { width: 400px; height: 400px; background: var(--navy);  bottom: 0;   right: -100px; }
+
+    /* ── LAYOUT ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(0,31,77,0.6);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: fadeDown 0.7s ease both;
+    }
+
+    .header-logo img {
+      height: 38px;
+      filter: brightness(0) invert(1);
+    }
+
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .pulse-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #3dffa0;
+      box-shadow: 0 0 8px #3dffa0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 4rem 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+    }
+
+    .hero-title span {
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .hero-sub {
+      margin-top: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    /* ── STATS ROW ── */
+    .stats {
+      display: flex;
+      gap: 1px;
+      margin: 0 3rem 2.5rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--line);
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .stat {
+      flex: 1;
+      padding: 1.2rem 1.5rem;
+      background: rgba(0,31,77,0.55);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-value.blue { color: var(--blue); }
+
+    /* ── DASHBOARD WRAPPER ── */
+    .dashboard-section {
+      flex: 1;
+      padding: 0 3rem 3rem;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+
+    .dashboard-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .dashboard-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .iframe-shell {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow:
+        0 0 0 1px rgba(61,147,247,0.08),
+        0 24px 80px rgba(0,0,0,0.45);
+      background: #001228;
+      position: relative;
+    }
+
+    .iframe-shell iframe {
+      display: block;
+      width: 100%;
+      height: 580px;
+      border: none;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      background: rgba(0,31,77,0.4);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      header, .hero, .dashboard-section, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .stats { margin-left: 1.5rem; margin-right: 1.5rem; flex-direction: column; }
+      .iframe-shell iframe { height: 420px; }
+      .hero-title { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="page">
+
+    <!-- HEADER -->
+    <header>
+      <div class="header-logo">
+        <img src="https://cdn.theatertoolkit.com/cdn/wwwroot/themes/custom/thelotent/images/logo.png?v=20250408.2" alt="The Lot">
+      </div>
+      <div class="header-badge">
+        <span class="pulse-dot"></span>
+        Live Data Feed
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+      <p class="hero-eyebrow">System Monitoring / La Jolla</p>
+      <h1 class="hero-title">Infrastructure<br><span>Health Dashboard</span></h1>
+      <p class="hero-sub">Real-time visibility into disk usage, memory performance, and system status for the La Jolla location.</p>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">Location</span>
+        <span class="stat-value">La Jolla</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Server</span>
+        <span class="stat-value blue">LOT&#8209;LJ3</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Monitored</span>
+        <span class="stat-value">C: D: F:</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Refresh</span>
+        <span class="stat-value blue">Live</span>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard-section">
+      <div class="dashboard-label">Power BI Report</div>
+      <div class="iframe-shell">
+        <iframe
+          title="HOME"
+          src="https://app.powerbi.com/reportEmbed?reportId=edb2f8a1-5b8f-4cd6-8ebf-26c57525022a&autoAuth=true&ctid=b8a09021-737e-4c48-84f1-7d6f90d1523f"
+          frameborder="0"
+          allowFullScreen="true">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>&copy; 2025 The Lot Entertainment — La Jolla</span>
+      <span>TheLotMonitoring · Powered by Power BI</span>
+    </footer>
+
+  </div>
+</body>
+</html>
